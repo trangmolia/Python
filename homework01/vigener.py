@@ -1,6 +1,6 @@
 def encrypt_vigenere(plaintext, keyword):
     """
-git    >>> encrypt_vigenere("PYTHON", "A")
+    >>> encrypt_vigenere("PYTHON", "A")
     'PYTHON'
     >>> encrypt_vigenere("python", "a")
     'python'
