@@ -1,26 +1,35 @@
-from math import *
+from math import sqrt
+import random
+
 
 def is_prime(n):
     value = int(sqrt(n))
-    for i in range(2,value + 1,1):
-        if (n % i == 0):
-            return(False)
-    return(True)
+    for i in range(2, value + 1, 1):
+        if n % i == 0:
+            return False
+    return True
 
-def gcd(a, b):
-    value = min(a,b)
-    for i in range (value, 2, -1):
-        if (b % i == 0) and (a % i == 0):
-            return i
-    return 1
 
 def multiplicative_inverse(e, phi):
-    i = 1
-    while i >= 1:
-        value = i*e - 1
-        if value % phi == 0:
-            return i
-        i += 1
+    s1, s2 = 1, 0
+    t1, t2 = 0, 1
+    while phi != 0:
+        q = e // phi
+        r = e % phi
+        e, phi = phi, r
+        s = s1 - q * s2
+        s1, s2 = s2, s
+        t = t1 - q * t2
+        t1, t2 = t2, t
+    return s1 % s2
+
+
+def gcd(a, b):
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a % b)
+
 
 def generate_keypair(p, q):
     if not (is_prime(p) and is_prime(q)):
@@ -28,15 +37,23 @@ def generate_keypair(p, q):
     elif p == q:
         raise ValueError('p and q cannot be equal')
 
-    n = q * p
-    phi = (p-1) * (q-1)
+    # n = pq
+    n = p * q
+
+    # phi = (p-1)(q-1)
+    phi = (p - 1) * (q - 1)
+
+    # Choose an integer e such that e and phi(n) are coprime
     e = random.randrange(1, phi)
-    
+
+    # Use Euclid's Algorithm to verify that e and phi(n) are comprime
     g = gcd(e, phi)
     while g != 1:
         e = random.randrange(1, phi)
         g = gcd(e, phi)
 
+    # Use Extended Euclid's Algorithm to generate the private key
     d = multiplicative_inverse(e, phi)
-    
-    return ((e, n), (d, n))
+    # Return public and private keypair
+    # Public key is (e, n) and private key is (d, n)
+    return (e, n), (d, n)
