@@ -82,7 +82,7 @@ class Cell:
     def is_alive(self) -> int:
         return self.state
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(int(self.state))
 
 
@@ -140,7 +140,7 @@ class CellList():
         return self
 
     @classmethod
-    def from_file(cls, filename):
+    def from_file(cls, filename) -> list:
         with open(filename, 'r') as f:
 
             r = 0
