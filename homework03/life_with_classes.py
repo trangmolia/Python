@@ -88,7 +88,7 @@ class Cell:
 
 class CellList():
 
-    def __init__(self, nrows: int, ncols: int, randomize=False, ok=False):
+    def __init__(self, nrows: int, ncols: int, randomize=False, False):
         self.nrows = nrows
         self.ncols = ncols
 
