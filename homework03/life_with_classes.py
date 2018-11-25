@@ -129,7 +129,7 @@ class CellList():
                 neighbours = self.get_neighbours(cell)
                 sum = 0
                 for value in neighbours:
-                        sum += value.state
+                    sum += value.state
                 if sum == 3 and cell.state == 0:
                     cell.state = 1
                 elif (sum == 2 or sum == 3) and cell.state == 1:
@@ -181,12 +181,12 @@ class CellList():
             raise StopIteration
 
     def __str__(self) -> str:
-        str = ''
+        result = ''
         for i in range(self.nrows):
             for j in range(self.ncols):
                 if (self.clist[i][j].is_alive()):
-                    str += '1'
+                    result += '1'
                 else:
-                    str += '0'
-            str += '\n'
-        return str
+                    result += '0'
+            result += '\n'
+        return result
