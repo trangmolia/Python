@@ -1,0 +1,4 @@
+### requirements.txt ###
+beautifulsoup4==4.6.0
+pyTelegramBotAPI==3.6.6
+requests==2.18.4
