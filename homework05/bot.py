@@ -9,7 +9,7 @@ bot = telebot.TeleBot(config.access_token)
 work_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 
-def get_page(group, week=''):
+def get_page(group: str, week=''):
     if week:
         week = str(week) + '/'
     url = '{domain}/{group}/{week}raspisanie_zanyatiy_{group}.htm'.format(
@@ -30,6 +30,8 @@ def parse_schedule_for_any_day(web_page, day):
     schedule_table = soup.find("table", attrs={"id": index})
 
     # Время проведения занятий
+    if schedule_table is None:
+        return None
     times_list = schedule_table.find_all("td", attrs={"class": "time"})
     times_list = [times.span.text for times in times_list]
 
@@ -52,6 +54,10 @@ def get_schedule(message):
     web_page = get_page(group)
     resp = ''
     day = day[1].upper() + day[2:]
+    if parse_schedule_for_any_day(web_page, day) is None:
+        bot.send_message(message.chat.id, 'The system is currently unavailable. Please try back later.',
+                         parse_mode='HTML')
+        return None
     times_lst, locations_lst, lessons_lst = \
         parse_schedule_for_any_day(web_page, day)
     if times_lst:
@@ -70,6 +76,10 @@ def get_near_lesson(message):
     today = datetime.now()
     _date = today.isoweekday()
     if _date is not 6:
+        if parse_schedule_for_any_day(web_page, work_days[_date]) is None:
+            bot.send_message(message.chat.id, 'The system is currently unavailable. Please try back later.',
+                             parse_mode='HTML')
+            return None
         times_lst, locations_lst, lessons_lst = \
             parse_schedule_for_any_day(web_page, work_days[_date])
         for i in range(len(times_lst)):
@@ -84,6 +94,10 @@ def get_near_lesson(message):
         _date = 0
 
     for i in range(_date, 5):
+        if parse_schedule_for_any_day(web_page, work_days[_date]) is None:
+            bot.send_message(message.chat.id, 'The system is currently unavailable. Please try back later.',
+                             parse_mode='HTML')
+            break
         times_lst, locations_lst, lessons_lst = \
             parse_schedule_for_any_day(web_page, work_days[_date])
         if times_lst:
@@ -103,6 +117,10 @@ def get_tommorow(message):
     if today == 6:
         today = 0
     for i in range(today, 5):
+        if parse_schedule_for_any_day(web_page, work_days[today]) is None:
+            bot.send_message(message.chat.id, 'The system is currently unavailable. Please try back later.',
+                             parse_mode='HTML')
+            break
         times_lst, locations_lst, lessons_lst = \
             parse_schedule_for_any_day(web_page, work_days[today])
         if times_lst:
@@ -119,6 +137,10 @@ def get_all_schedule(message):
     web_page = get_page(group)
     for day in work_days:
         resp = ''
+        if parse_schedule_for_any_day(web_page, day) is None:
+            bot.send_message(message.chat.id, 'The system is currently unavailable. Please try back later.',
+                             parse_mode='HTML')
+            break
         times_lst, locations_lst, lessons_lst = \
             parse_schedule_for_any_day(web_page, day)
 
