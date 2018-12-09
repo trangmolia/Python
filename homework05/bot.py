@@ -115,7 +115,7 @@ def get_tommorow(message):
     resp = ''
 
     if tomorrow == 6:
-        bot.send_message(message.chat.id, 'No classes today, Trang', parse_mode='HTML')
+        bot.send_message(message.chat.id, 'No classes tomorrow, Trang', parse_mode='HTML')
         return None
     if tomorrow == 7:
         tomorrow = 0
