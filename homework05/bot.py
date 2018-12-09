@@ -74,7 +74,7 @@ def get_near_lesson(message):
     _, group = message.text.split()
     web_page = get_page(group)
     today = datetime.now()
-    _date = today.isoweekday()
+    _date = today.weekday()
     if _date is not 6:
         if parse_schedule_for_any_day(web_page, work_days[_date]) is None:
             bot.send_message(message.chat.id, 'The system is currently unavailable. Please try back later.',
