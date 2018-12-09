@@ -106,28 +106,27 @@ def get_near_lesson(message):
             break
 
 
-@bot.message_handler(commands=['tommorow'])
+@bot.message_handler(commands=['tomorrow'])
 def get_tommorow(message):
     """ Получить расписание на следующий день """
     _, group = message.text.split()
     web_page = get_page(group)
-    today = datetime.now().isoweekday()
+    tomorrow = datetime.now().weekday() + 1
     resp = ''
 
-    if today == 6:
-        today = 0
-    for i in range(today, 5):
-        if parse_schedule_for_any_day(web_page, work_days[today]) is None:
-            bot.send_message(message.chat.id, 'The system is currently unavailable. Please try back later.',
-                             parse_mode='HTML')
-            break
-        times_lst, locations_lst, lessons_lst = \
-            parse_schedule_for_any_day(web_page, work_days[today])
-        if times_lst:
-            for _time, location, lession in zip(times_lst, locations_lst, lessons_lst):
-                resp += '<b>{}</b>, {}, {}\n'.format(_time, location, lession)
-            bot.send_message(message.chat.id, resp, parse_mode='HTML')
-            break
+    if tomorrow == 6:
+        bot.send_message(message.chat.id, 'No classes today, Trang', parse_mode='HTML')
+        return None
+    if tomorrow == 7:
+        tomorrow = 0
+    times_lst, locations_lst, lessons_lst = \
+        parse_schedule_for_any_day(web_page, work_days[tomorrow])
+    if times_lst:
+        for _time, location, lession in zip(times_lst, locations_lst, lessons_lst):
+            resp += '<b>{}</b>, {}, {}\n'.format(_time, location, lession)
+        bot.send_message(message.chat.id, resp, parse_mode='HTML')
+    else:
+        bot.send_message(message.chat.id, 'No classes tomorrow, Trang', parse_mode='HTML')
 
 
 @bot.message_handler(commands=['all'])
