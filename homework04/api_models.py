@@ -25,4 +25,3 @@ class Message(BaseModel):
     random_id: int
     important: bool
     date: float
-

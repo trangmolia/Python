@@ -8,7 +8,6 @@ from typing import List, Tuple
 from api import messages_get_history
 from api_models import Message
 import config
-import random
 
 
 Dates = List[datetime.date]
@@ -38,7 +37,7 @@ def count_dates_from_messages(messages: List[Message]) -> Tuple[Dates, Frequenci
     flag = []
 
     for message in messages:
-        new_date.append(message['date']) # list with unixtime
+        new_date.append(message['date'])  # list with unixtime
 
     new_date = sorted(new_date)
 
@@ -66,11 +65,8 @@ def plotly_messages_freq(dates: Dates, freq: Frequencies) -> None:
     data = [go.Scatter(x=dates, y=freq)]
     py.plot(data)
 
+
 if __name__ == '__main__':
     flag = messages_get_history(user_id=73415922)
     count_dates_from_messages(flag)
     plotly_messages_freq(dates=dates, freq=frequencies)
-
-
-
-

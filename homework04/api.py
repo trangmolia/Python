@@ -43,7 +43,8 @@ def get_friends(user_id, fields):
         'fields': fields
     }
 
-    query = "{domain}/friends.get?access_token={access_token}&user_id={user_id}&fields={fields}&v=5.92".format(**query_params)
+    query = "{domain}/friends.get?access_token={access_token}\
+            &user_id={user_id}&fields={fields}&v=5.92".format(**query_params)
     response = get(query).json()
 
     if 'response' in response:
@@ -73,7 +74,8 @@ def messages_get_history(user_id, offset=0, count=20):
         'count': count,
     }
 
-    url = "{domain}/messages.getHistory?access_token={access_token}\&user_id={user_id}&offset={offset}&count={count}&v=5.92"
+    url = "{domain}/messages.getHistory?access_token={access_token}\
+            &user_id={user_id}&offset={offset}&count={count}&v=5.92"
     query = url.format(**query_params)
 
     messages = []
@@ -95,4 +97,4 @@ def messages_get_history(user_id, offset=0, count=20):
             query_params['offset'] += count
         time.sleep(0.33)
 
-    return  messages
+    return messages
