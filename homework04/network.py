@@ -30,12 +30,12 @@ def get_network(user_id, as_edgelist=True):
 
 
 def plot_graph(user_id):
-    fr_sex = get_friends(user_id, fields='sex')
+    friend = get_friends(user_id, fields='sex')
     graph = get_network(user_id, as_edgelist=True)
 
     vertices = []
-    for i in range(len(fr_sex)):
-        vertices.append(fr_sex[i]['first_name'])
+    for i in range(len(friend)):
+        vertices.append(friend[i]['first_name'])
 
     g = Graph(vertex_attrs={'label': vertices}, edges=graph, directed=False)
 
@@ -45,11 +45,8 @@ def plot_graph(user_id):
         area=N ** 3,
         repulserad=N ** 3)}
 
-    plot(g, **visual_style)
-    g.simplify(multiple=True, loops=True)
-    communities = g.community_edge_betweenness(directed=False)
-    clusters = communities.as_clustering()
-    print(clusters)
+    out = plot(g, "social_network.png", **visual_style)
+    out.save('social-network_allyBetweenness.png')
 
 if __name__ == '__main__':
     plot_graph(user_id=462579673)

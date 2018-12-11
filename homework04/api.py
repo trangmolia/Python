@@ -73,32 +73,26 @@ def messages_get_history(user_id, offset=0, count=20):
         'count': count,
     }
 
-    query = "{domain}/messages.getHistory?access_token={access_token}\&user_id={user_id}&offset={offset}&count={count}&v=5.92".format(**query_params)
+    url = "{domain}/messages.getHistory?access_token={access_token}\&user_id={user_id}&offset={offset}&count={count}&v=5.92"
+    query = url.format(**query_params)
 
-    mess = []
-    response = get(query)
-    data = response.json()
-    cycles = data['response']['count'] // 200
+    messages = []
+    response = get(query).json()
+    count = min(count, 200)
+    cycles = response['response']['count'] // count
+    div = response['response']['count'] % count
+    if div:
+        cycles += 1
 
-    if not cycles:
-        mess.append(response.json()['response']['items'])
-        return mess
-
-    for i in enumerate(cycles, 1):
-        response = get(query)
-        query_params['offset'] += 200
-        mess.append(response.json()['response']['items'])
+    for i in range(cycles):
+        query = url.format(**query_params)
+        response = get(query, params=query_params)
+        for i in range(min(count, div)):
+            messages.append(response.json()['response']['items'][i])
+        if div and i == cycles - 2:
+            query_params['offset'] += div
+        else:
+            query_params['offset'] += count
         time.sleep(0.33)
 
-    return  mess
-
-if __name__ == '__main__':
-    print(messages_get_history(user_id=462579673))
-
-
-
-
-
-
-
-
+    return  messages
