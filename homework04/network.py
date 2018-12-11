@@ -46,7 +46,7 @@ def plot_graph(user_id):
         repulserad=N ** 3)}
 
     out = plot(g, "social_network.png", **visual_style)
-    out.save('social-network_allyBetweenness.png')
+    out.save('social-network_analytics.png')
 
 if __name__ == '__main__':
     plot_graph(user_id=462579673)
