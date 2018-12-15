@@ -83,8 +83,8 @@ def get_near_lesson(message):
         times_lst, locations_lst, lessons_lst = \
             parse_schedule_for_any_day(web_page, work_days[_date])
         for i in range(len(times_lst)):
-            t1 = times_lst[i][0:4]
-            t1 = datetime.strftime(t1, '%H:%M')
+            t1 = times_lst[i][0:5]
+            t1 = datetime.strptime(t1, '%H:%M')
             if today.time() < t1.time():
                 result = '<b>{}</b>, {}, {}\n'.format(times_lst[i], locations_lst[i], lessons_lst[i])
                 bot.send_message(message.chat.id, result, parse_mode='HTML')
