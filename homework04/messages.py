@@ -16,7 +16,6 @@ Frequencies = List[int]
 dates = []
 frequencies = []
 
-
 plotly.tools.set_credentials_file(
     username=config.PLOTLY_CONFIG['username'],
     api_key=config.PLOTLY_CONFIG['api_key']
@@ -33,25 +32,21 @@ def count_dates_from_messages(messages: List[Message]) -> Tuple[Dates, Frequenci
     :param messages: список сообщений
     """
 
-    new_date = []
     flag = []
 
-    for message in messages:
-        new_date.append(message['date'])  # list with unixtime
+    new_dates = [message['date'] for message in messages]
 
-    new_date = sorted(new_date)
+    new_dates = sorted(new_dates)
 
-    for i in range(len(new_date)):
-        _date = datetime.utcfromtimestamp(new_date[i]).strftime("%Y-%m-%d")
-        if _date not in dates:
-            dates.append(_date)
-            flag.append(i)
+    for i in range(len(new_dates)):
+        _date = datetime.utcfromtimestamp(new_dates[i]).strftime("%Y-%m-%d")
+        flag.append(_date)
 
-    for i in range(len(flag)):
-        if i == 0:
-            frequencies.append(flag[i] + 1)
-        else:
-            frequencies.append(flag[i] - flag[i-1])
+    flag = Counter(flag)
+
+    for i in flag:
+        dates.append(i)
+        frequencies.append(flag[i])
 
     return dates, frequencies
 

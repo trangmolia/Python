@@ -1,6 +1,6 @@
 import requests
 import time
-import random
+
 import config
 
 
@@ -81,17 +81,17 @@ def messages_get_history(user_id, offset=0, count=20):
     response = get(query).json()
     count = min(count, 200)
     cycles = response['response']['count'] // count
-    div = response['response']['count'] % count
-    if div:
+    d = response['response']['count'] % count
+    if d:
         cycles += 1
 
     for i in range(cycles):
         query = url.format(**query_params)
         response = get(query, params=query_params)
-        for i in range(min(count, div)):
+        for i in range(min(count, d)):
             messages.append(response.json()['response']['items'][i])
-        if div and i == cycles - 2:
-            query_params['offset'] += div
+        if d and i == cycles - 2:
+            query_params['offset'] += d
         else:
             query_params['offset'] += count
         time.sleep(0.33)

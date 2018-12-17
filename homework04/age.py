@@ -17,13 +17,13 @@ def age_predict(user_id: int) -> Optional[float]:
     assert isinstance(user_id, int), "user_id must be positive integer"
     assert user_id > 0, "user_id must be positive integer"
 
-    friend = get_friends(user_id, fields='bdate')
+    friends = get_friends(user_id, fields='bdate')
     list_age = []
 
-    for item in friend:
-        if 'bdate' in item:
-            item = User(**item)
-            birthday = item.bdate
+    for friend in friends:
+        user = User(**friend)
+        if user.bdate:
+            birthday = user.bdate
             today = dt.now()
 
             if len(birthday) == 10:
@@ -37,6 +37,5 @@ def age_predict(user_id: int) -> Optional[float]:
     return None
 
 
-
-
-
+if __name__ == '__main__':
+    age_predict(user_id=462579673)
