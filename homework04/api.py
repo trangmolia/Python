@@ -13,7 +13,7 @@ def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
     :param max_retries: максимальное число повторных запросов
     :param backoff_factor: коэффициент экспоненциального нарастания задержки
     """
-    flag = 0
+    flag = 0  # flag uses to check amount of remaining retries and was used in formula sum_time
     while flag < max_retries:
         try:
             return requests.get(url)
@@ -79,7 +79,7 @@ def messages_get_history(user_id, offset=0, count=20):
     response = get(query).json()
     count = min(count, 200)
     cycles = response['response']['count'] // count
-    d = response['response']['count'] % count
+    d = response['response']['count'] % count  # d = div
     if d:
         cycles += 1
 

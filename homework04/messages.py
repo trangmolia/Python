@@ -32,21 +32,19 @@ def count_dates_from_messages(messages: List[Message]) -> Tuple[Dates, Frequenci
     :param messages: список сообщений
     """
 
-    flag = []
-
+    flag = []  # flag is a list of dates with form ("%Y-%m-%d") until line 41
     new_dates = [message['date'] for message in messages]
-
     new_dates = sorted(new_dates)
 
     for i in range(len(new_dates)):
-        _date = datetime.utcfromtimestamp(new_dates[i]).strftime("%Y-%m-%d")
-        flag.append(_date)
+        date = datetime.utcfromtimestamp(new_dates[i]).strftime("%Y-%m-%d")
+        flag.append(date)
 
-    flag = Counter(flag)
+    flag = Counter(flag)  # flag includes dates and frequency of each date
 
-    for i in flag:
-        dates.append(i)
-        frequencies.append(flag[i])
+    for date in flag:
+        dates.append(date)
+        frequencies.append(flag[date])
 
     return dates, frequencies
 
