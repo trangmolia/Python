@@ -131,3 +131,6 @@ class GameOfLife:
                     new_clist[i][j] = 0
         self.clist = new_clist
         return self.clist
+
+if __name__ == '__main__':
+    GameOfLife(800, 300, 20).run()

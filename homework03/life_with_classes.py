@@ -52,6 +52,7 @@ class GameOfLife:
             # Отрисовка списка клеток
             # Выполнение одного шага игры (обновление состояния ячеек)
             self.draw_cell_list(clist)
+            clist = CellList.update(clist)
 
             pygame.display.flip()
             clock.tick(self.speed)
@@ -82,7 +83,7 @@ class Cell:
     def is_alive(self) -> int:
         return self.state
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         return str(int(self.state))
 
 
@@ -129,7 +130,7 @@ class CellList():
                 neighbours = self.get_neighbours(cell)
                 sum = 0
                 for value in neighbours:
-                    sum += value.state
+                        sum += value.state
                 if sum == 3 and cell.state == 0:
                     cell.state = 1
                 elif (sum == 2 or sum == 3) and cell.state == 1:
@@ -140,7 +141,7 @@ class CellList():
         return self
 
     @classmethod
-    def from_file(cls, filename) -> list:
+    def from_file(cls, filename):
         with open(filename, 'r') as f:
 
             r = 0
@@ -181,12 +182,15 @@ class CellList():
             raise StopIteration
 
     def __str__(self) -> str:
-        result = ''
+        str = ''
         for i in range(self.nrows):
             for j in range(self.ncols):
                 if (self.clist[i][j].is_alive()):
-                    result += '1'
+                    str += '1'
                 else:
-                    result += '0'
-            result += '\n'
-        return result
+                    str += '0'
+            str += '\n'
+        return str
+
+if __name__ == '__main__':
+    GameOfLife(320, 240, 20).run()
