@@ -144,7 +144,8 @@ class CellList():
     def from_file(cls, filename):
         with open(filename, 'r') as f:
 
-            r = 0                                   # r = row; c = columb
+            # r = row; c = column
+            r = 0
             matrix = []
 
             for line in f:
