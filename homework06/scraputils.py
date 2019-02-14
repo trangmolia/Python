@@ -7,20 +7,20 @@ def extract_news(parser):
     """ Extract news from a given web page """
     news_list = []
 
-    # parse and create scores list
+    # find and create scores list
     poins = parser.find_all("span", attrs={"class": "score"})
     poins_list = [score.text.split()[0] for score in poins]
 
-    # parse and create authors list
+    # find and create authors list
     authors = parser.find_all("a", attrs={"class": "hnuser"})
     authors_list = [author.text for author in authors]     
 
-    # parse and create urls list, titles list
+    # find and create urls list, titles list
     data = parser.find_all("a", attrs={"class": "storylink"})
     urls_list = [url['href'] for url in data]
     titles_list = [title.text for title in data]
 
-    # parse and create comments list
+    # find and create comments list
     items = parser.find_all("td", attrs={"class": "subtext"})
     comments_list = []
     for item in items:

@@ -29,7 +29,7 @@ def update_news():
 @route("/classify")
 def classify_news():
     # PUT YOUR CODE HERE
-
+    redirect("/news")
 
 if __name__ == "__main__":
     run(host="localhost", port=8080)
