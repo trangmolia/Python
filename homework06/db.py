@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 Base = declarative_base()
 engine = create_engine("sqlite:///news.db")
 session = sessionmaker(bind=engine)
-
+s = session()
 
 class News(Base):
     __tablename__ = "news"

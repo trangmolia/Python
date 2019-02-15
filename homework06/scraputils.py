@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 
 def extract_news(parser):
     """ Extract news from a given web page """
-    news_list = []
 
     # find and create scores list
     poins = parser.find_all("span", attrs={"class": "score"})
@@ -31,7 +30,7 @@ def extract_news(parser):
             # if has comments, amount of comments was dynamically displayed
             # so need to find amount of comments like bellow
             if 'comment' in tag.text:
-                cmt = re.findall('\d+', tag.text)
+                cmt = re.findall("\d+", tag.text)
                 comments_list.append(cmt[0])
 
     news_list = [{"author": a, "comments": c, "points": p, "title": t, "url": u}
@@ -59,8 +58,3 @@ def get_news(url, n_pages=1):
         news.extend(news_list)
         n_pages -= 1
     return news
-
-
-if __name__ == "__main__":
-    news_list = get_news("https://news.ycombinator.com/newest", n_pages=2)
-

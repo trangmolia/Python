@@ -1,7 +1,7 @@
 class NaiveBayesClassifier:
 
     def __init__(self, alpha):
-        pass
+        self.alpha = alpha
 
     def fit(self, X, y):
         """ Fit Naive Bayes classifier according to X, y. """
