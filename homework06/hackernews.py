@@ -13,6 +13,7 @@ s = session()
 # can use @route("/") (dynamic route) on top to render default page, if available
 @route("/news")
 def news_list():
+    # find all news not has label
     rows = s.query(News).filter(News.label == None).all()
     return template('news_template', rows=rows)
 
@@ -32,13 +33,13 @@ def add_label():
 # update news to news.db (use SQLALchemy)
 @route("/update")
 def update_news():
-    news = get_news('https://news.ycombinator.com/newest', 1)
-    for new in news:
-        s.add(News(title=new['title'],
-                   author=new['author'],
-                   url=new['url'],
-                   comments=new['comments'],
-                   points=new['points']))
+    news_list = get_news('https://news.ycombinator.com/newest', 1)
+    for news in news_list:
+        s.add(News(title=news['title'],
+                   author=news['author'],
+                   url=news['url'],
+                   comments=news['comments'],
+                   points=news['points']))
     s.commit()
     redirect("/news")
 
@@ -48,8 +49,26 @@ def recommendations():
     # 1. Получить список неразмеченных новостей из БД
     # 2. Получить прогнозы для каждой новости
     # 3. Вывести ранжированную таблицу с новостями
+    title_unclassified = title_classified = []
+    label_list = []
 
-    return template('news_recommendations', rows=classified_news)
+    # create list of titles was classified and list of labels to train
+    unclassified_news = s.query(News).filter(News.label != None).all()
+    for news in unclassified_news:
+        title_classified.append(news.title)
+        label_list.append(news.label)
+
+    # create list titles needs to classify
+    classified_news = s.query(News).filter(News.label == None).all()
+    for news in classified_news:
+        title_unclassified.append(news.title)
+
+    data = NaiveBayesClassifier(alpha=1)
+    data.fit(title_classified, label_list)
+
+    label_classified = data.predict(title_unclassified)
+
+    return template('recommendations_template', rows=classified_news)
 
 
 if __name__ == "__main__":
