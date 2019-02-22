@@ -49,19 +49,23 @@ def recommendations():
     # 1. Получить список неразмеченных новостей из БД
     # 2. Получить прогнозы для каждой новости
     # 3. Вывести ранжированную таблицу с новостями
-    title_unclassified = title_classified = []
+
+    # if define title_unclassified = title_classified = []
+    # 2 lists will receive the same values
+    title_unclassified = []
+    title_classified = []
     label_list = []
 
-    # create list of titles was classified and list of labels to train
-    unclassified_news = s.query(News).filter(News.label != None).all()
+    # create list titles needs to classify
+    unclassified_news = s.query(News).filter(News.label.is_(None)).all()
     for news in unclassified_news:
+        title_unclassified.append(news.title)
+
+    # create list of titles was classified and list of labels to train
+    classified_news = s.query(News).filter(News.label.isnot(None)).all()
+    for news in classified_news:
         title_classified.append(news.title)
         label_list.append(news.label)
-
-    # create list titles needs to classify
-    classified_news = s.query(News).filter(News.label == None).all()
-    for news in classified_news:
-        title_unclassified.append(news.title)
 
     data = NaiveBayesClassifier(alpha=1)
     data.fit(title_classified, label_list)

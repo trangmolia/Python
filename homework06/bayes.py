@@ -1,4 +1,6 @@
+from collections import Counter, defaultdict
 from math import log
+import numpy as np
 
 
 # in this case, we use Naive Bayes with Laplace smoothing
@@ -7,82 +9,71 @@ class NaiveBayesClassifier:
     def __init__(self, alpha=1):
         # alpha is a parameter estimation with add 1 smoothing
         self.alpha = alpha
-        self.word_list = []
-        self.frequency_ham = self.frequency_spam = []
-        self.probability_word_ham = self.probability_word_spam = []
 
     def fit(self, X, y):
         """ Fit Naive Bayes classifier according to X, y. """
-        index = -1
-        count_word_ham = 0
-        count_msg_ham = 0
-        for i in range(len(X)):
-            flag_list = X[i].split()
-            if y[i] == 'ham':
-                count_msg_ham += 1
-            for word in flag_list:
-                if word not in self.word_list:
-                    index += 1
-                    self.word_list.append(word)
-                    self.frequency_ham.append(0)
-                    self.frequency_spam.append(0)
-                    if y[i] == 'ham':
-                        self.frequency_ham[index] = 1
-                        count_word_ham += 1
-                    if y[i] == 'spam':
-                        self.frequency_spam[index] = 1
-                else:
-                    if y[i] == 'ham':
-                        self.frequency_ham[index] += 1
-                    if y[i] == 'spam':
-                        self.frequency_spam[index] += 1
 
-        # amount meaning amount of words
-        amount = len(self.word_list)
-        count_word_spam = amount - count_word_ham
+        # count all labels given from y
+        self.labels = list(Counter(y).keys())
 
-        # 2 list below use Laplace smoothing
-        for i in range(amount):
-            value_ham = (self.frequency_ham[i] + self.alpha) / (count_word_ham + amount*self.alpha)
-            value_spam = (self.frequency_spam[i] + self.alpha) / (count_word_spam + amount*self.alpha)
-            self.probability_word_ham.append(value_ham)
-            self.probability_word_spam.append(value_spam)
+        # data is list of defaultdicts
+        # each defaultdict has all words with frequency
+        # labels[0] corresponds to data[0]
+        self.data = []
 
-        self.probability_msg_ham = count_msg_ham / len(X)
-        self.probability_msg_spam = 1 - self.probability_msg_ham
+        # amount_words is list of amount different words according labels
+        self.amount_words = []
 
+        # all_words is total different words trained
+        self.all_words = 0
+
+        for label in self.labels:
+            d = defaultdict(int)
+            for i in range(len(X)):
+                if y[i] == label:
+                    words = X[i].split()
+                    for word in words:
+                        d[word] += 1
+            self.amount_words.append(len(d))
+            self.all_words += len(d)
+            self.data.append(d)
 
     def predict(self, X):
         """ Perform classification on an array of test vectors X. """
-        p1 = p2 = 0
-        count = 0
+        result = ['']*len(X)
+        label_index = 0
+        for x in X:
+            words = x.split()
 
-        for word in X:
-            if word in self.word_list:
-                index = self.word_list.index(word)
-                if self.probability_word_ham == 0:
-                    count += 1
-                p1 += log(self.probability_word_ham[index])
-                p2 += log(self.probability_word_spam[index])
-        p1 += log(self.probability_msg_ham)
-        p2 += log(self.probability_msg_spam)
+            # proba_title is list of probabilities with each label
+            proba_title = []
 
-        return p1, p2
+            for i in range(len(self.data)):
+                proba = 0
+                for word in words:
+                    key = self.data[i].keys()
+                    if word in key:
+                        proba += log((self.data[i][word] + 1) / (self.amount_words[i] + self.all_words))
+                    else:
+                        proba += log(1 / (self.amount_words[i] + self.all_words))
+                proba += log(self.amount_words[i] / self.all_words)
+                proba_title.append(proba)
+                if proba < -100:
+                    print(label_index)
+            index_max_proba = np.argmax(proba_title, axis=None, out=None)
+            result[label_index] = self.labels[index_max_proba]
+            label_index += 1
 
+        print(result)
+        return result
 
     def score(self, X_test, y_test):
         """ Returns the mean accuracy on the given test data and labels. """
+        result = self.predict(X_test)
         count = 0
-        for i in range(len(X_test)):
-            flag_list = X_test[i].split()
-            p1, p2 = self.predict(flag_list)
-            if p1 > p2:
-                label = 'ham'
-            else:
-                label = 'spam'
-            if label == y_test[i]:
+        for i in range(len(result)):
+            if result[i] == y_test[i]:
                 count += 1
             else:
                 print(i)
-        print('...')
         return count / len(y_test)

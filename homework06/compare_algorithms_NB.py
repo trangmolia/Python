@@ -34,9 +34,9 @@ if __name__ == "__main__":
 
     model = NaiveBayesClassifier(alpha=1)
     model.fit(X_train, y_train)
-    model_test.fit(X_train, y_train)
-
     result_1 = model.score(X_test, y_test)
+
+    model_test.fit(X_train, y_train)
     result_2 = model_test.score(X_test, y_test)
 
     print("Ok") if result_1 == result_2 else print("Failed")
