@@ -6,7 +6,7 @@ import numpy as np
 # in this case, we use Naive Bayes with Laplace smoothing
 class NaiveBayesClassifier:
 
-    def __init__(self, alpha=1):
+    def __init__(self, alpha=0.8):
         # alpha is a parameter estimation with add 1 smoothing
         self.alpha = alpha
 
@@ -42,6 +42,7 @@ class NaiveBayesClassifier:
         """ Perform classification on an array of test vectors X. """
         result = ['']*len(X)
         label_index = 0
+        
         for x in X:
             words = x.split()
 
@@ -58,13 +59,10 @@ class NaiveBayesClassifier:
                         proba += log(1 / (self.amount_words[i] + self.all_words))
                 proba += log(self.amount_words[i] / self.all_words)
                 proba_title.append(proba)
-                if proba < -100:
-                    print(label_index)
             index_max_proba = np.argmax(proba_title, axis=None, out=None)
             result[label_index] = self.labels[index_max_proba]
             label_index += 1
 
-        print(result)
         return result
 
     def score(self, X_test, y_test):
@@ -74,6 +72,4 @@ class NaiveBayesClassifier:
         for i in range(len(result)):
             if result[i] == y_test[i]:
                 count += 1
-            else:
-                print(i)
         return count / len(y_test)

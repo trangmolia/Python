@@ -9,7 +9,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 model_test = Pipeline([
     ('vectorizer', TfidfVectorizer()),
-    ('classifier', MultinomialNB(alpha=1)),
+    ('classifier', MultinomialNB(alpha=0.8)),
 ])
 
 
