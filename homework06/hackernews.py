@@ -71,6 +71,10 @@ def recommendations():
     data.fit(title_classified, label_list)
 
     label_classified = data.predict(title_unclassified)
+    for i in range(len(unclassified_news)):
+        unclassified_news[i].label = label_classified[i]
+    s.commit()
+    classified_news = s.query(News).filter(News.label == 'good').all()
 
     return template('recommendations_template', rows=classified_news)
 

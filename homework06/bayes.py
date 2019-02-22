@@ -42,7 +42,7 @@ class NaiveBayesClassifier:
         """ Perform classification on an array of test vectors X. """
         result = ['']*len(X)
         label_index = 0
-        
+
         for x in X:
             words = x.split()
 
