@@ -6,7 +6,7 @@ import numpy as np
 # in this case, we use Naive Bayes with Laplace smoothing
 class NaiveBayesClassifier:
 
-    def __init__(self, alpha=0.8):
+    def __init__(self, alpha=0.05):
         # alpha is a parameter estimation with add 1 smoothing
         self.alpha = alpha
 

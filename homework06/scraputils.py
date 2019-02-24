@@ -33,8 +33,8 @@ def extract_news(parser):
                 cmt = re.findall("\d+", tag.text)
                 comments_list.append(cmt[0])
 
-    news_list = [{"author": a, "comments": c, "points": p, "title": t, "url": u}
-                 for a, c, p, t, u in zip(authors_list, comments_list, poins_list, titles_list, urls_list)]
+    news_list = [{"title": t, "author": a, "url": u, "comments": c, "points": p}
+                 for t, a, u, c, p in zip(titles_list, authors_list, urls_list, comments_list, poins_list)]
 
     return news_list
 

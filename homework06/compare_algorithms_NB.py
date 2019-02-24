@@ -9,7 +9,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 model_test = Pipeline([
     ('vectorizer', TfidfVectorizer()),
-    ('classifier', MultinomialNB(alpha=0.8)),
+    ('classifier', MultinomialNB(alpha=0.05)),
 ])
 
 
@@ -32,7 +32,7 @@ def read_and_process_data():
 if __name__ == "__main__":
     X_train, y_train, X_test, y_test = read_and_process_data()
 
-    model = NaiveBayesClassifier(alpha=1)
+    model = NaiveBayesClassifier(alpha=0.05)
     model.fit(X_train, y_train)
     result_1 = model.score(X_test, y_test)
 
