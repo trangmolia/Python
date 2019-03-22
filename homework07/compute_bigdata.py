@@ -21,6 +21,6 @@ def heavy_computation(data_chunk):
     for value in data_chunk:
         for _ in range(value + 1):
             prime_number_list = []
-            for number in range(1000000):
+            for number in range(100000):
                 if IsPrime(number):
                     prime_number_list.append(number)

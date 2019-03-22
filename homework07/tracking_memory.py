@@ -37,11 +37,3 @@ if __name__ == "__main__":
     results = pool.map(heavy_computation, data)
 
     print(results)
-
-    process_name = "python.exe"
-    for proc in psutil.process_iter():
-        process = psutil.Process(proc.pid)# Get the process info using PID
-        pname = process.name()    # Here is the process name
-        if pname == process_name:
-            results = pool.map(heavy_computation, data)
-            print(process.cpu_percent())
