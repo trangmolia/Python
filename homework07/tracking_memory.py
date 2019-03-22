@@ -1,8 +1,9 @@
-import psutil
+# import psutil
 from memory_profiler import memory_usage
 import os
 
 from compute_data import heavy_computation
+
 
 class ProcessPool():
     def __init__(self, min_workers, max_workers, mem_usage, cpu_usage):
@@ -16,9 +17,7 @@ class ProcessPool():
         if sum_workers < self.min_workers:
             return -1
 
-        result = self.mem_usage / memory_max
-
-        return min(int(result), self.max_workers)
+        return min(int(self.mem_usage / memory_max), self.max_workers)
 
     def map(self, func, data):
         memory_max = memory_usage((func, (data,)), max_usage=True)
