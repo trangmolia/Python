@@ -2,7 +2,7 @@ import psutil
 from memory_profiler import memory_usage
 import os
 
-from compute_bigdata import heavy_computation
+from compute_data import heavy_computation
 
 class ProcessPool():
     def __init__(self, min_workers, max_workers, mem_usage, cpu_usage):
@@ -32,7 +32,7 @@ class ProcessPool():
 
 if __name__ == "__main__":
     # MB is default unit of mem_usage
-    pool = ProcessPool(min_workers=2, max_workers=10, mem_usage=1000, cpu_usage = 0.8)
+    pool = ProcessPool(min_workers=2, max_workers=10, mem_usage=1000, cpu_usage=0.8)
     data = [i for i in range(10)]
     results = pool.map(heavy_computation, data)
 
