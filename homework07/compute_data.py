@@ -18,9 +18,8 @@ def IsPrime(n: int) -> bool:
 
 def heavy_computation(data_chunk):
     # value = times to find all prime numbers within range 1000000
-    for value in data_chunk:
-        for _ in range(value + 1):
-            prime_number_list = []
-            for number in range(1000000):
-                if IsPrime(number):
-                    prime_number_list.append(number)
+    for _ in range(data_chunk):
+        prime_number_list = []
+        for number in range(100000):
+            if IsPrime(number):
+                prime_number_list.append(number)
