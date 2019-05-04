@@ -17,4 +17,4 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = ['localhost:8000']
+ALLOWED_HOSTS = ['*']
