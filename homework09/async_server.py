@@ -67,7 +67,7 @@ class AsyncServer(asyncore.dispatcher):
         try:
             asyncore.loop()
         except KeyboardInterrupt:
-            logging.debug("Exited the program")
+            log.debug("Exited the program")
 
 
 class AsyncHTTPRequestHandler(asynchat.async_chat):
@@ -82,8 +82,11 @@ class AsyncHTTPRequestHandler(asynchat.async_chat):
 
     def collect_incoming_data(self, data):
         log.debug(f"Incoming data: {data}")
-        self.ibuffer += data
+
+        # need decode to avoid error string <byte>
+        self.ibuffer += data.decode('utf-8')
         self.parse_headers(self.ibuffer) 
+
         # self._collect_incoming_data(data) -> ? 
 
 
@@ -95,13 +98,20 @@ class AsyncHTTPRequestHandler(asynchat.async_chat):
         if not self.reading_headers:
             self.reading_headers = False 
             self.parse_headers(self.ibuffer) 
-            pass
-            
 
 
     def parse_headers(self, headers):
         header_values = headers.split('\r\n') 
-        print(header_values)
+
+        header_list = {}
+
+        h = header_values[0].split()    
+        header_list['method'], header_list['uri'], header_list['protocol'] = h[0], h[1], h[2]
+
+        for i in range(1, len(header_values)):
+            item = header_values[i].split()
+            key, val = item[0].replace(":", ""), item[1]
+            header_list[key] = val
 
 
     def send_header(self, keyword, value):
