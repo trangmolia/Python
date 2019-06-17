@@ -1,0 +1,5 @@
+{% autoescape off %}
+    <p> Hello {{ user|safe }}</p>
+    <p>Your account has successfully created. Please click below link to comfirm your email.</p>
+    <p>{{ domain }}<a href="{% url 'accounts:activate' uidb64 token %}"> Confirm your email </a></p>
+{% endautoescape %}

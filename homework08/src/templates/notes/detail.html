@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>{{ note.title }}</h1>
+    <input type="text" value="{{ note.tags }}" style="border: none" disabled/>
+    <p>{{ note.body }}</p>
+
+{% endblock %}
