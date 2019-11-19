@@ -1,7 +1,6 @@
 import telebot
-import config
 
-access_token = config.access_token
+access_token = "YOUR TOKEN"
 bot = telebot.TeleBot(access_token)
 
 @bot.message_handler(content_types=['text'])
@@ -10,4 +9,3 @@ def echo(message):
 
 if __name__ == '__main__':
     bot.polling(non_stop=True)
-
