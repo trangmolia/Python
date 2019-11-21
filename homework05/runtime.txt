@@ -1,12 +1,1 @@
-### runtime.txt ###
-python-3.7
-
-
-### requirements.txt ###
-beautifulsoup4==4.6.0
-pyTelegramBotAPI==3.6.6
-requests==2.18.4
-
-
-### Procfile ###
-web: python3 bot.py
+python-3.8.0
