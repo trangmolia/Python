@@ -1,21 +1,21 @@
 import requests
-import config
-import telebot
-from datetime import *
+from datetime import datetime
 from bs4 import BeautifulSoup
+import telebot
 
 
-bot = telebot.TeleBot(config.access_token)
+access_token = "ADD YOUR TOKEN HERE"
+telebot.apihelper.proxy = {'http':'http://10.10.1.10:3128'}
+
+bot = telebot.TeleBot(access_token)
+
 work_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-
+domain = "http://www.ifmo.ru/ru/schedule/0/"
 
 def get_page(group: str, week=''):
     if week:
         week = str(week) + '/'
-    url = '{domain}/{group}/{week}raspisanie_zanyatiy_{group}.htm'.format(
-        domain=config.domain,
-        week=week,
-        group=group)
+    url = f'{domain}/{group}/{week}raspisanie_zanyatiy_{group}.htm'
     response = requests.get(url)
     web_page = response.text
     return web_page
@@ -75,7 +75,7 @@ def get_near_lesson(message):
     web_page = get_page(group)
     today = datetime.now()
     _date = today.weekday()
-    if _date is not 6:
+    if _date != 6:
         if parse_schedule_for_any_day(web_page, work_days[_date]) is None:
             bot.send_message(message.chat.id, 'The system is currently unavailable. Please try back later.',
                              parse_mode='HTML')
@@ -150,4 +150,4 @@ def get_all_schedule(message):
 
 
 if __name__ == '__main__':
-    bot.polling(none_stop=True)
+    bot.polling()
