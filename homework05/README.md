@@ -1,4 +1,4 @@
-### A simple Telegram bot chat helps student get schedule by specify group name
+### A simple Telegram bot chat helps ITMO's student get schedule by specify group name
 
 **To get schedule, you must to type:** <br> <br>
 `/tomorrow YOUR_GROUP` : get schedule for tommorow <br>
