@@ -6,11 +6,10 @@ from scraputils import get_news
 from db import News, session
 from bayes import NaiveBayesClassifier
 
+
 s = session()
 
 
-# when access to localhost, need to type "/news" or any string, which inside @route()
-# can use @route("/") (dynamic route) on top to render default page, if available
 @route("/news")
 def news_list():
     # find all news not has label
@@ -20,17 +19,14 @@ def news_list():
 
 @route("/add_label/")
 def add_label():
-    # get value of label via query parameter in template
     label = request.query.label
     current_id = request.query.id
     row = s.query(News).filter(News.id == current_id).all()
-    # row is list of map, and length of row is 1, so need to call row[0]
     row[0].label = label
     s.commit()
     redirect("/news")
 
 
-# update news to news.db (use SQLALchemy)
 @route("/update")
 def update_news():
     news_list = get_news('https://news.ycombinator.com/newest', 1)
@@ -56,12 +52,10 @@ def recommendations():
     title_classified = []
     label_list = []
 
-    # create list titles needs to classify
     unclassified_news = s.query(News).filter(News.label.is_(None)).all()
     for news in unclassified_news:
         title_unclassified.append(news.title)
 
-    # create list of titles was classified and list of labels to train
     classified_news = s.query(News).filter(News.label.isnot(None)).all()
     for news in classified_news:
         title_classified.append(news.title)
