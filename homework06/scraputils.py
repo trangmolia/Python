@@ -24,11 +24,8 @@ def extract_news(parser):
     comments_list = []
     for item in items:
         for tag in item.find_all("a", attrs={"href": True}):
-            # if doesn't has comments, tag.text after anchor (which has text = "web") is "discuss"
             if tag.text == "discuss":
                 comments_list.append('0')
-            # if has comments, amount of comments was dynamically displayed
-            # so need to find amount of comments like bellow
             if 'comment' in tag.text:
                 cmt = re.findall("\d+", tag.text)
                 comments_list.append(cmt[0])
