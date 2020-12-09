@@ -10,12 +10,14 @@
 | [homework04](https://github.com/trangology/Python/tree/master/homework04) | Analytics some user's information via [VKontakte API](https://vk.com/dev/methods) |
 | [homework05](https://github.com/trangology/Python/tree/master/homework05) | A simple [Telegram](https://telegram.org/) bot chat helps ITMO's student get schedule |
 
+<br />
+
 **Assignments in the spring semester 2019**
 | Name | Detail |
 | ------ | ------ |
-| [homework06](https://github.com/trangology/Python/tree/master/homework06) | A local site displays news from [Hacker News](https://news.ycombinator.com/) |
+| [homework06](https://github.com/trangology/Python/tree/master/homework06) | A simple recommendation system using [Bayes Classifier](https://en.wikipedia.org/wiki/Bayes_classifier) to display news from [Hacker News](https://news.ycombinator.com/) |
 | [homework07](https://github.com/trangology/Python/tree/master/homework07) | A simple solution for paralell computing NOT using [Multiprocessing library](https://github.com/python/cpython/blob/master/Lib/multiprocessing/pool.py) |
-| [homework08](https://github.com/trangology/Python/tree/master/homework08) | A very small local app for taking notes using [Django](https://www.djangoproject.com/) |
+| [homework08](https://github.com/trangology/Python/tree/master/homework08) | A small local app for taking notes using [Django framework](https://www.djangoproject.com/) |
 | [homework09](https://github.com/trangology/Python/tree/master/homework09) | Problems related to asynchronous and synchronous |
 
-Coding assignments resource: https://github.com/Dementiy/pybook-assignments/
+Templates of coding assignments: https://github.com/Dementiy/pybook-assignments/
